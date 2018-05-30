@@ -178,7 +178,31 @@ Definition R0 (r : reg) : value :=
 Require Import FunctionalExtensionality.
 
 
-Theorem update_regs_same :
+Example eval_prod_loop :
+  (H, R0, jump (lvalue "prod")) -->* (H, R0, jump (lvalue "loop")).
+Proof.
+  eapply rt_trans.
+  - apply rt_step.
+    apply JUMP with (s := "prod").
+    + reflexivity.
+    + reflexivity.
+  - eapply rt_trans.
+    + apply rt_step.
+      unfold prod'.
+      apply MOV.
+    + simpl.
+      assert (H: updateRegs R0 r3 (nvalue 0) = R0).
+      * extensionality r'.
+        destruct r'; reflexivity.
+      * rewrite H.
+        apply rt_refl.
+Qed.
+
+(*
+We can extract the proposition we have asserting in the proof above as a 
+separate lemma 
+ *)
+Lemma update_regs_same :
   forall R r,
     updateRegs R r (R r) = R.
 Proof.
@@ -187,8 +211,7 @@ Proof.
   destruct r', r; reflexivity.
 Qed.
 
-
-Example eval_prod_loop :
+Example eval_prod_loop_lemma :
   (H, R0, jump (lvalue "prod")) -->* (H, R0, jump (lvalue "loop")).
 Proof.
   eapply rt_trans.
