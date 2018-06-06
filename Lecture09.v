@@ -127,7 +127,7 @@ Inductive eval : MState -> MState -> Prop :=
       -> H s = Some I'
       -> eval (H, R, cjump r v ; I) (H, R, I')
 | IF_NEQ :
-    forall (H : Heap) (R : Regs) (I I' : Instr) (r : reg) (v : value) (s : string) (n : Z),
+    forall (H : Heap) (R : Regs) (I : Instr) (r : reg) (v : value) (n : Z),
       R r = nvalue n
       -> n <> 0%Z
       -> eval (H, R, cjump r v ; I) (H, R, I).
