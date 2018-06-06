@@ -208,7 +208,7 @@ Lemma update_regs_same :
 Proof.
   intros R r.
   extensionality r'.
-  destruct r', r; reflexivity.
+  destruct r'; destruct r; reflexivity.
 Qed.
 
 Example eval_prod_loop_lemma :
