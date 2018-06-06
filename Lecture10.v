@@ -69,7 +69,9 @@ Admitted.
 
 Inductive TAL0Type : Type :=
 | int : TAL0Type
-| code : (reg -> TAL0Type) -> TAL0Type.
+| code : (reg -> TAL0Type) -> TAL0Type
+| var : nat -> TAL0Type
+| all : nat -> TAL0Type -> TAL0Type.
 
 
 Definition RegTypes := reg -> TAL0Type.
