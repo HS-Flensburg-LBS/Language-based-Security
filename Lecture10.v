@@ -102,34 +102,34 @@ Proof.
 Qed.
 
 
-Inductive value_has_type : LabelTypes -> value -> TAL0Type -> Prop :=
-| S_INT :
-    forall (Psi : LabelTypes) (n : Z),
-      value_has_type Psi (nvalue n) int
-| S_LAB :
-    forall (Psi : LabelTypes) (l : string) (t : TAL0Type),
-      Psi l = Some t -> value_has_type Psi (lvalue l) t.
+(* Inductive value_has_type : LabelTypes -> value -> TAL0Type -> Prop := *)
+(* | S_INT : *)
+(*     forall (Psi : LabelTypes) (n : Z), *)
+(*       value_has_type Psi (nvalue n) int *)
+(* | S_LAB : *)
+(*     forall (Psi : LabelTypes) (l : string) (t : TAL0Type), *)
+(*       Psi l = Some t -> value_has_type Psi (lvalue l) t. *)
 
-Inductive operand_has_type : LabelTypes -> RegTypes -> value -> TAL0Type -> Prop :=
-| S_REG :
-    forall (Psi : LabelTypes) (Gamma : RegTypes) (r : reg),
-      operand_has_type Psi Gamma (rvalue r) (Gamma r)
-| S_VAL :
-    forall (Psi : LabelTypes) (Gamma : RegTypes) (v : value) (tau : TAL0Type),
-       value_has_type Psi v tau -> operand_has_type Psi Gamma v tau.
+(* Inductive operand_has_type : LabelTypes -> RegTypes -> value -> TAL0Type -> Prop := *)
+(* | S_REG : *)
+(*     forall (Psi : LabelTypes) (Gamma : RegTypes) (r : reg), *)
+(*       operand_has_type Psi Gamma (rvalue r) (Gamma r) *)
+(* | S_VAL : *)
+(*     forall (Psi : LabelTypes) (Gamma : RegTypes) (v : value) (tau : TAL0Type), *)
+(*        value_has_type Psi v tau -> operand_has_type Psi Gamma v tau. *)
 
-Inductive instr_has_type : LabelTypes -> instr -> RegTypes -> RegTypes -> Prop :=
-| S_MOV :
-    forall (Psi : LabelTypes) (Gamma : RegTypes) (v : value) (tau : TAL0Type) (rd : reg),
-      operand_has_type Psi Gamma v tau
-      -> instr_has_type Psi (mov rd v) Gamma (update TAL0Type Gamma rd tau)
-| S_ADD :
-    forall (Psi : LabelTypes) (Gamma : RegTypes) (v : value) (rs : reg) (rd : reg),
-      operand_has_type Psi Gamma (rvalue rs) int
-      -> operand_has_type Psi Gamma v int
-      -> instr_has_type Psi (add rd rs v) Gamma (update TAL0Type Gamma rd int)
-| S_IF :
-    forall (Psi : LabelTypes) (Gamma : RegTypes) (rs : reg) (v : value),
-      operand_has_type Psi Gamma (rvalue rs) int 
-      -> operand_has_type Psi Gamma v (code Gamma)
-      -> instr_has_type Psi (cjump rs v) Gamma Gamma.
+(* Inductive instr_has_type : LabelTypes -> instr -> RegTypes -> RegTypes -> Prop := *)
+(* | S_MOV : *)
+(*     forall (Psi : LabelTypes) (Gamma : RegTypes) (v : value) (tau : TAL0Type) (rd : reg), *)
+(*       operand_has_type Psi Gamma v tau *)
+(*       -> instr_has_type Psi (mov rd v) Gamma (update TAL0Type Gamma rd tau) *)
+(* | S_ADD : *)
+(*     forall (Psi : LabelTypes) (Gamma : RegTypes) (v : value) (rs : reg) (rd : reg), *)
+(*       operand_has_type Psi Gamma (rvalue rs) int *)
+(*       -> operand_has_type Psi Gamma v int *)
+(*       -> instr_has_type Psi (add rd rs v) Gamma (update TAL0Type Gamma rd int) *)
+(* | S_IF : *)
+(*     forall (Psi : LabelTypes) (Gamma : RegTypes) (rs : reg) (v : value), *)
+(*       operand_has_type Psi Gamma (rvalue rs) int  *)
+(*       -> operand_has_type Psi Gamma v (code Gamma) *)
+(*       -> instr_has_type Psi (cjump rs v) Gamma Gamma. *)
